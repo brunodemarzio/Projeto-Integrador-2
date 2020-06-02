@@ -6,29 +6,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import models.Cliente;
+import models.Vendedor;
 
-public class clienteDAO {
-    public static boolean Salvar(Cliente c) {
+public class vendedorDAO {
+    public static boolean Salvar(Vendedor c) {
         boolean retorno = false;
         Connection conexao = null;
         PreparedStatement instrucaoSQL = null;
                 
-        try {
+    try {
             
             conexao = GerenciadorConexao.abrirConexao();
-            instrucaoSQL = conexao.prepareStatement("INSERT INTO cliente (nome,sexo,cpf,email,endereco"
+            instrucaoSQL = conexao.prepareStatement("INSERT INTO vendedores (nome,sexo,cpf,email,endereco"
             + ",telefone,estCivil,nascimento) VALUES(?,?,?,?,?,?,?,?)"
             , Statement.RETURN_GENERATED_KEYS);
             
             instrucaoSQL.setString(1, c.getNome());
             instrucaoSQL.setString(2, c.getSexo());
             instrucaoSQL.setString(3, c.getCPF());
-            instrucaoSQL.setString(4, c.getEmail());
-            instrucaoSQL.setString(5, c.getEndereco());
-            instrucaoSQL.setInt(6, c.getTelefone());
-            instrucaoSQL.setString(7, c.getEstCivil());
-            instrucaoSQL.setInt(8, c.getNascimento());
             
             int linhasAfetadas = instrucaoSQL.executeUpdate();
             
@@ -38,10 +33,10 @@ public class clienteDAO {
                 
                 ResultSet generatedKeys = instrucaoSQL.getGeneratedKeys();//Recupero o ID
                 if (generatedKeys.next()) {
-                        c.setidCliente(generatedKeys.getInt(1));
+                        c.setidVendedor(generatedKeys.getInt(1));
                 }
                 else {
-                    throw new SQLException("Falha ao obter o ID do cliente.");
+                    throw new SQLException("Falha ao obter o ID do vendedor.");
                 }
             }
             else{
@@ -64,8 +59,8 @@ public class clienteDAO {
         
         return retorno;
     }
-    
-    public static boolean Atualizar(Cliente c){
+        
+    public static boolean Atualizar(Vendedor c){
     boolean retorno = false;
         Connection conexao = null;
         PreparedStatement instrucaoSQL = null;
@@ -73,17 +68,13 @@ public class clienteDAO {
         try {
             
             conexao = GerenciadorConexao.abrirConexao();
-            instrucaoSQL = conexao.prepareStatement("UPDATE cliente SET nome = ?, sexo=?, cpf=?, email=?, endereco=?, telefone=?, estCivil=?, nascimento=? WHERE idCliente =? ");
+            instrucaoSQL = conexao.prepareStatement("UPDATE vendedor SET nome = ?, sexo=?, cpf=? WHERE idVend =? ");
             
             
             instrucaoSQL.setString(1, c.getNome());
             instrucaoSQL.setString(2, c.getSexo());
             instrucaoSQL.setString(3, c.getCPF());
-            instrucaoSQL.setString(4, c.getEmail());
-            instrucaoSQL.setString(5, c.getEndereco());
-            instrucaoSQL.setInt(6, c.getTelefone());
-            instrucaoSQL.setString(7, c.getEstCivil());
-            instrucaoSQL.setInt(8, c.getNascimento());
+            
             
             int linhasAfetadas = instrucaoSQL.executeUpdate();
             
@@ -93,10 +84,10 @@ public class clienteDAO {
                 
                 ResultSet generatedKeys = instrucaoSQL.getGeneratedKeys();//Recupero o ID
                 if (generatedKeys.next()) {
-                        c.setidCliente(generatedKeys.getInt(1));
+                        c.setidVendedor(generatedKeys.getInt(1));
                 }
                 else {
-                    throw new SQLException("Falha ao obter o ID do cliente.");
+                    throw new SQLException("Falha ao obter o ID do vendedor.");
                 }
             }
             else{
@@ -120,34 +111,29 @@ public class clienteDAO {
         return retorno;
     }
     
-    public static ArrayList<Cliente> Pesquisar (){
+    public static ArrayList<Vendedor> Pesquisar (){
         ResultSet rs = null;
         Connection conexao = null;
         PreparedStatement instrucaoSQL = null;
-        ArrayList<Cliente> listaClientes = new ArrayList<Cliente>();
+        ArrayList<Vendedor> listaVendedores = new ArrayList<Vendedor>();
         try {
         conexao = GerenciadorConexao.abrirConexao();
-        instrucaoSQL = conexao.prepareStatement("SELECT NOME FROM cliente;");
+        instrucaoSQL = conexao.prepareStatement("SELECT NOME FROM vendedores;");
         rs = instrucaoSQL.executeQuery();
         while(rs.next())
             {
-                Cliente c = new Cliente();
-                c.setidCliente(rs.getInt("idCliente"));
+                Vendedor c = new Vendedor();
+                c.setidVendedor(rs.getInt("idVend"));
                 c.setNome(rs.getString("nome"));
                 c.setSexo(rs.getString("sexo"));
                 c.setCPF(rs.getString("cpf"));
-                c.setEmail(rs.getString("email"));
-                c.setEndereco(rs.getString("enreco"));
-                c.setTelefone(rs.getInt("telefone"));
-                c.setEstCivil(rs.getString("estCivil"));
-                c.setNascimento(rs.getInt("nascimento"));
                 
-                listaClientes.add(c);
+                listaVendedores.add(c);
             }
             
         }catch (SQLException | ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
-            listaClientes = null;
+            listaVendedores = null;
         } finally{
             //Libero os recursos da memória
             try {
@@ -163,10 +149,10 @@ public class clienteDAO {
             }
         }
         
-        return listaClientes;
+        return listaVendedores;
     }
     
-    public static boolean Excluir(Cliente c) {
+    public static boolean Excluir(Vendedor c) {
         boolean retorno = false;
         Connection conexao = null;
         PreparedStatement instrucaoSQL = null;
@@ -174,9 +160,9 @@ public class clienteDAO {
         try {
             
             conexao = GerenciadorConexao.abrirConexao();
-            instrucaoSQL = conexao.prepareStatement("DELETE FROM cliente WHERE idCliente = ?");
+            instrucaoSQL = conexao.prepareStatement("DELETE FROM vendedores WHERE idVend = ?");
             
-            instrucaoSQL.setInt(1, c.getidCliente());
+            instrucaoSQL.setInt(1, c.getidVendedor());
             
             
             int linhasAfetadas = instrucaoSQL.executeUpdate();
@@ -187,10 +173,10 @@ public class clienteDAO {
                 
                 ResultSet generatedKeys = instrucaoSQL.getGeneratedKeys();//Recupero o ID
                 if (generatedKeys.next()) {
-                        c.setidCliente(generatedKeys.getInt(1));
+                        c.setidVendedor(generatedKeys.getInt(1));
                 }
                 else {
-                    throw new SQLException("Falha ao obter o ID do cliente.");
+                    throw new SQLException("Falha ao obter o ID do vendedor.");
                 }
             }
             else{
@@ -213,5 +199,4 @@ public class clienteDAO {
         
         return retorno;
     }
-    
 }

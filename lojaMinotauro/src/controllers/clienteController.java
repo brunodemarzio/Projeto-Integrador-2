@@ -3,7 +3,7 @@ import DAOs.clienteDAO;
 import models.Cliente;
 
 public class clienteController {
-    public static boolean Salvar(String nomeCliente, String sexoCliente, int CPFcliente,
+    public static boolean Salvar(String nomeCliente, String sexoCliente, String CPFcliente,
         String emailCliente, String enderecoCliente, int telefoneCliente, String estCivilCliente, int nascimentoCliente){
         
         Cliente objCliente = new Cliente();

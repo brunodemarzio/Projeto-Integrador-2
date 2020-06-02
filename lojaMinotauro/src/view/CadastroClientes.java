@@ -323,7 +323,7 @@ public class CadastroClientes extends javax.swing.JFrame {
         } else {
             endereco = txtEndereco.getText();
         }
-        String telefone = null;
+        /*String telefone = null;
         if(txtTel.getText().trim().equals("")){
             JOptionPane.showMessageDialog(this, "campo obrigatório!");
         } else {
@@ -341,13 +341,14 @@ public class CadastroClientes extends javax.swing.JFrame {
         } else {
             nascimento = txtNasc.getText();
         }
+        */
         
         
         //chamar controller
         
         String nomeCliente = txtNome.getText();
         String sexoCliente = sexo;
-        int CPFcliente = Integer.parseInt(txtCPF.getText());
+        String CPFcliente = txtCPF.getText();
         String emailCliente = txtEmail.getText();
         String enderecoCliente = txtEndereco.getText();
         int telefoneCliente = Integer.parseInt(txtTel.getText());
